@@ -33,7 +33,7 @@ public class UserDaoJDBCImpl implements UserDao {
                     "\n");
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-           // e.printStackTrace();
+            e.printStackTrace();
         } finally {
             if (preparedStatement != null) {
                 preparedStatement.close();
