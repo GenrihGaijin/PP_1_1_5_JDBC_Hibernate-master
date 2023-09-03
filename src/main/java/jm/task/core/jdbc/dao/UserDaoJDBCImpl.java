@@ -21,7 +21,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void createUsersTable() throws SQLException {
         try {
-            preparedStatement = connection.prepareStatement("create table users\n" +
+            preparedStatement = connection.prepareStatement("create table if not exists users\n" +
                     "(\n" +
                     "    id       int auto_increment,\n" +
                     "    name     varchar(50) null,\n" +
@@ -33,7 +33,7 @@ public class UserDaoJDBCImpl implements UserDao {
                     "\n");
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+           // e.printStackTrace();
         } finally {
             if (preparedStatement != null) {
                 preparedStatement.close();

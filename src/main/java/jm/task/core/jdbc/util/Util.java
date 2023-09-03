@@ -16,10 +16,8 @@ private final String DB_driver = "com.mysql.cj.jdbc.Driver";
         try {
             Class.forName(DB_driver);
             connection = DriverManager.getConnection(DB_url,DB_username,DB_password);
-            System.out.println("connection ok");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (SQLException e) {
+
+        } catch (ClassNotFoundException | SQLException e ) {
             throw new RuntimeException(e);
         }
         return connection;

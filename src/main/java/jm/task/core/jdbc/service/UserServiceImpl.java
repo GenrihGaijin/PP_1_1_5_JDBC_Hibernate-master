@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
     public List<User> getAllUsers() throws SQLException {
         List <User> users = userDaoJDBC.getAllUsers();
 
-        for(int i =0; i< users.size();i++)
+        for(int i =0; i< users.size(); i++)
         {
             System.out.println(users.get(i));
         }
