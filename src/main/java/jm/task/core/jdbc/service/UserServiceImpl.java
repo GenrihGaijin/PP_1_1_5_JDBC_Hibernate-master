@@ -8,31 +8,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
-    UserDao userDaoJDBC = new UserDaoJDBCImpl();
+    UserDao userDaoHibernate = new UserDaoHibernateImpl();
     public void createUsersTable() throws SQLException {
-        userDaoJDBC.createUsersTable();
+        userDaoHibernate.createUsersTable();
 
     }
 
     public void dropUsersTable() throws SQLException {
-        userDaoJDBC.dropUsersTable();
+        userDaoHibernate.dropUsersTable();
 
     }
 
     public void saveUser(String name, String lastName, byte age) throws SQLException {
-        userDaoJDBC.saveUser(name, lastName, age);
+        userDaoHibernate.saveUser(name, lastName, age);
         System.out.println(String.join(" ","User с именем", name, "добавлен в базу данных "));
 
     }
 
     public void removeUserById(long id) throws SQLException {
-        userDaoJDBC.removeUserById(id);
+        userDaoHibernate.removeUserById(id);
 
 
     }
 
     public List<User> getAllUsers() throws SQLException {
-        List <User> users = userDaoJDBC.getAllUsers();
+        List <User> users = userDaoHibernate.getAllUsers();
 
         for(int i =0; i< users.size(); i++)
         {
@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public void cleanUsersTable() throws SQLException {
-        userDaoJDBC.cleanUsersTable();
+        userDaoHibernate.cleanUsersTable();
 
     }
 }
