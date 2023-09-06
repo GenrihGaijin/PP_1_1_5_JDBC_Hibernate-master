@@ -45,10 +45,7 @@ public class UserDaoHibernateImpl implements UserDao {
     public void dropUsersTable() {
         try (Session session = getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
-
-
             Query query = session.createSQLQuery("DROP TABLE IF EXISTS users").addEntity(User.class);
-
             query.executeUpdate();
             transaction.commit();
         } catch (HibernateException e) {
@@ -91,8 +88,7 @@ public class UserDaoHibernateImpl implements UserDao {
             transaction.commit();
             return users;
         } catch (HibernateException e) {
-            System.out.println("ошибка в классе getAllUsers");
-
+            System.out.println("ошибка в методе getAllUsers");
         }
         return users;
     }
