@@ -88,7 +88,6 @@ public class UserDaoHibernateImpl implements UserDao {
             criteriaQuery.from(User.class);
             Transaction transaction = session.beginTransaction();
             users = session.createQuery(criteriaQuery).getResultList();
-
             transaction.commit();
             return users;
         } catch (HibernateException e) {
@@ -103,7 +102,6 @@ public class UserDaoHibernateImpl implements UserDao {
         try (Session session = getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             Query query = session.createSQLQuery("TRUNCATE TABLE users");
-
             query.executeUpdate();
             transaction.commit();
         } catch (HibernateException e) {
