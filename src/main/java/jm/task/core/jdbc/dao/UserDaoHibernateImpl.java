@@ -20,39 +20,38 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void createUsersTable() {
-       try ( Session session = getSessionFactory().openSession();){
-        Transaction transaction = session.beginTransaction();
+        try (Session session = getSessionFactory().openSession();) {
+            Transaction transaction = session.beginTransaction();
 
 
-
-        Query query = session.createSQLQuery("create table if not exists users\n" +
-                "(\n" +
-                "    id       int auto_increment,\n" +
-                "    name     varchar(50) null,\n" +
-                "    lastname varchar(50) null,\n" +
-                "    age      TINYINT     null,\n" +
-                "    constraint users_pk\n" +
-                "        primary key (id)\n" +
-                ");\n" +
-                "\n").addEntity(User.class);
-        query.executeUpdate();
-        transaction.commit();}
-        catch (HibernateException e){
+            Query query = session.createSQLQuery("create table if not exists users\n" +
+                    "(\n" +
+                    "    id       int auto_increment,\n" +
+                    "    name     varchar(50) null,\n" +
+                    "    lastname varchar(50) null,\n" +
+                    "    age      TINYINT     null,\n" +
+                    "    constraint users_pk\n" +
+                    "        primary key (id)\n" +
+                    ");\n" +
+                    "\n").addEntity(User.class);
+            query.executeUpdate();
+            transaction.commit();
+        } catch (HibernateException e) {
             System.out.println("Ошибка в методе createUserTable");
         }
     }
 
     @Override
     public void dropUsersTable() {
-        try (Session session = getSessionFactory().openSession()){
-        Transaction transaction = session.beginTransaction();
+        try (Session session = getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
 
 
-        Query query = session.createSQLQuery("DROP TABLE IF EXISTS users").addEntity(User.class);
+            Query query = session.createSQLQuery("DROP TABLE IF EXISTS users").addEntity(User.class);
 
-        query.executeUpdate();
-        transaction.commit();}
-        catch (HibernateException e){
+            query.executeUpdate();
+            transaction.commit();
+        } catch (HibernateException e) {
             System.out.println("ошибка в методе dropUsersTable");
         }
 
@@ -60,24 +59,22 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void saveUser(String name, String lastName, byte age) {
-        try (Session session = getSessionFactory().openSession()){
+        try (Session session = getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
-        session.save(new User(name, lastName, age) );
-        transaction.commit();
-        }
-        catch (HibernateException e){
+            session.save(new User(name, lastName, age));
+            transaction.commit();
+        } catch (HibernateException e) {
             System.out.println("ошибка в методе saveUser");
         }
     }
 
     @Override
     public void removeUserById(long id) {
-        try (Session session = getSessionFactory().openSession()){
+        try (Session session = getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             session.delete(session.get(User.class, id));
             transaction.commit();
-        }
-        catch (HibernateException e){
+        } catch (HibernateException e) {
             System.out.println("ошибка в методе saveUser");
         }
 
@@ -85,17 +82,16 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public List<User> getAllUsers() {
-        List<User>  users = null;
-       try ( Session session = getSessionFactory().openSession()){
-        CriteriaQuery<User> criteriaQuery = session.getCriteriaBuilder().createQuery(User.class);
-        criteriaQuery.from(User.class);
-        Transaction transaction = session.beginTransaction();
-             users = session.createQuery(criteriaQuery).getResultList();
+        List<User> users = null;
+        try (Session session = getSessionFactory().openSession()) {
+            CriteriaQuery<User> criteriaQuery = session.getCriteriaBuilder().createQuery(User.class);
+            criteriaQuery.from(User.class);
+            Transaction transaction = session.beginTransaction();
+            users = session.createQuery(criteriaQuery).getResultList();
 
             transaction.commit();
             return users;
-       }
-        catch (HibernateException e) {
+        } catch (HibernateException e) {
             System.out.println("ошибка в классе getAllUsers");
 
         }
@@ -104,14 +100,13 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void cleanUsersTable() {
-        try (Session session = getSessionFactory().openSession()){
+        try (Session session = getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             Query query = session.createSQLQuery("TRUNCATE TABLE users");
 
             query.executeUpdate();
             transaction.commit();
-        }
-        catch (HibernateException e){
+        } catch (HibernateException e) {
             System.out.println("ошибка в методе saveUser");
         }
 
