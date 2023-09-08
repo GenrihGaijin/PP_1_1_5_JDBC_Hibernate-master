@@ -6,6 +6,7 @@ import jm.task.core.jdbc.util.Util;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     }
 
-    public void createUsersTable() throws SQLException {
+    public void createUsersTable()  {
         try (PreparedStatement preparedStatement = connection.prepareStatement("create table if not exists users\n" +
                 "(\n" +
                 "    id       int auto_increment,\n" +
@@ -41,7 +42,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
 
 
-    public void dropUsersTable() throws SQLException {
+    public void dropUsersTable()  {
             try(PreparedStatement preparedStatement = connection.prepareStatement("DROP TABLE IF EXISTS users ");) {
 
                 preparedStatement.executeUpdate();
@@ -56,7 +57,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
 
 
-    public void saveUser(String name, String lastName, byte age) throws SQLException {
+    public void saveUser(String name, String lastName, byte age) {
 
         try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO users (name, lastname, age) VALUES (?,?,?)");){
 
@@ -69,7 +70,7 @@ public class UserDaoJDBCImpl implements UserDao {
         }
     }
 
-    public void removeUserById(long id) throws SQLException {
+    public void removeUserById(long id)  {
 
         try(PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM users WHERE id=?");){
 
@@ -83,7 +84,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     }
 
-    public List<User> getAllUsers() throws SQLException {
+    public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         try(ResultSet resultSet = connection.prepareStatement("SELECT * FROM users").executeQuery();) {
 
@@ -100,7 +101,7 @@ public class UserDaoJDBCImpl implements UserDao {
         return users;
     }
 
-    public void cleanUsersTable() throws SQLException {
+    public void cleanUsersTable() {
         try(PreparedStatement preparedStatement = connection.prepareStatement("TRUNCATE TABLE users");) {
 
             preparedStatement.executeUpdate();
