@@ -38,10 +38,10 @@ private static final String DB_driver = "com.mysql.cj.jdbc.Driver";
 
                 // Hibernate settings equivalent to hibernate.cfg.xml's properties
                 Properties settings = new Properties();
-                settings.put(Environment.DRIVER, "com.mysql.cj.jdbc.Driver");
-                settings.put(Environment.URL, "jdbc:mysql://localhost:3306/dbto?useSSL=false");
-                settings.put(Environment.USER, "root");
-                settings.put(Environment.PASS, "va2Aphacikaw`");
+                settings.put(Environment.DRIVER, DB_driver);
+                settings.put(Environment.URL, DB_url);
+                settings.put(Environment.USER, DB_username);
+                settings.put(Environment.PASS, DB_password);
                 settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL5Dialect");
 
                 settings.put(Environment.SHOW_SQL, "true");

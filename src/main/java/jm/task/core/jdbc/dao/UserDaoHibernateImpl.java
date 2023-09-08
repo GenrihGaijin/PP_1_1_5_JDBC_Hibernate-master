@@ -3,6 +3,7 @@ package jm.task.core.jdbc.dao;
 import jm.task.core.jdbc.model.User;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
@@ -13,6 +14,8 @@ import static jm.task.core.jdbc.util.Util.getSessionFactory;
 
 
 public class UserDaoHibernateImpl implements UserDao {
+    private SessionFactory sessionFactory = getSessionFactory();
+    private Transaction transaction = null;
     public UserDaoHibernateImpl() {
 
     }
@@ -20,9 +23,10 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void createUsersTable() {
-        try (Session session = getSessionFactory().openSession();) {
-            Transaction transaction = session.beginTransaction();
 
+        try (Session session = sessionFactory.openSession()) {
+
+            transaction = session.beginTransaction();
 
             Query query = session.createSQLQuery("create table if not exists users\n" +
                     "(\n" +
@@ -36,43 +40,50 @@ public class UserDaoHibernateImpl implements UserDao {
                     "\n").addEntity(User.class);
             query.executeUpdate();
             transaction.commit();
+
         } catch (HibernateException e) {
             System.out.println("Ошибка в методе createUserTable");
+            transaction.rollback();
+
         }
     }
 
     @Override
     public void dropUsersTable() {
-        try (Session session = getSessionFactory().openSession()) {
-            Transaction transaction = session.beginTransaction();
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
             Query query = session.createSQLQuery("DROP TABLE IF EXISTS users").addEntity(User.class);
             query.executeUpdate();
             transaction.commit();
         } catch (HibernateException e) {
             System.out.println("ошибка в методе dropUsersTable");
+            transaction.rollback();
         }
 
     }
 
     @Override
     public void saveUser(String name, String lastName, byte age) {
-        try (Session session = getSessionFactory().openSession()) {
-            Transaction transaction = session.beginTransaction();
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
             session.save(new User(name, lastName, age));
             transaction.commit();
         } catch (HibernateException e) {
             System.out.println("ошибка в методе saveUser");
+            transaction.rollback();
+
         }
     }
 
     @Override
     public void removeUserById(long id) {
-        try (Session session = getSessionFactory().openSession()) {
-            Transaction transaction = session.beginTransaction();
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
             session.delete(session.get(User.class, id));
             transaction.commit();
         } catch (HibernateException e) {
             System.out.println("ошибка в методе saveUser");
+            transaction.rollback();
         }
 
     }
@@ -80,28 +91,30 @@ public class UserDaoHibernateImpl implements UserDao {
     @Override
     public List<User> getAllUsers() {
         List<User> users = null;
-        try (Session session = getSessionFactory().openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             CriteriaQuery<User> criteriaQuery = session.getCriteriaBuilder().createQuery(User.class);
             criteriaQuery.from(User.class);
-            Transaction transaction = session.beginTransaction();
+            transaction = session.beginTransaction();
             users = session.createQuery(criteriaQuery).getResultList();
             transaction.commit();
             return users;
         } catch (HibernateException e) {
             System.out.println("ошибка в методе getAllUsers");
+            transaction.rollback();
         }
         return users;
     }
 
     @Override
     public void cleanUsersTable() {
-        try (Session session = getSessionFactory().openSession()) {
-            Transaction transaction = session.beginTransaction();
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
             Query query = session.createSQLQuery("TRUNCATE TABLE users");
             query.executeUpdate();
             transaction.commit();
         } catch (HibernateException e) {
             System.out.println("ошибка в методе saveUser");
+            transaction.rollback();
         }
 
     }
