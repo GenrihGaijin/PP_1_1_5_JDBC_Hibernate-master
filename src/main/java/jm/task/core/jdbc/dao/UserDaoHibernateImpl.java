@@ -11,6 +11,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
 import static jm.task.core.jdbc.util.Util.getSessionFactory;
+import static org.hibernate.resource.transaction.spi.TransactionStatus.ACTIVE;
+import static org.hibernate.resource.transaction.spi.TransactionStatus.MARKED_ROLLBACK;
 
 
 public class UserDaoHibernateImpl implements UserDao {
@@ -39,11 +41,14 @@ public class UserDaoHibernateImpl implements UserDao {
                     ");\n" +
                     "\n").addEntity(User.class);
             query.executeUpdate();
+
             transaction.commit();
 
         } catch (HibernateException e) {
             System.out.println("Ошибка в методе createUserTable");
-            transaction.rollback();
+
+            if (transaction.getStatus() == ACTIVE || transaction.getStatus() == MARKED_ROLLBACK) {
+                transaction.rollback();
 
         }
     }
@@ -57,7 +62,8 @@ public class UserDaoHibernateImpl implements UserDao {
             transaction.commit();
         } catch (HibernateException e) {
             System.out.println("ошибка в методе dropUsersTable");
-            transaction.rollback();
+            if (transaction.getStatus() == ACTIVE || transaction.getStatus() == MARKED_ROLLBACK) {
+                transaction.rollback();
         }
 
     }
@@ -70,7 +76,8 @@ public class UserDaoHibernateImpl implements UserDao {
             transaction.commit();
         } catch (HibernateException e) {
             System.out.println("ошибка в методе saveUser");
-            transaction.rollback();
+            if (transaction.getStatus() == ACTIVE || transaction.getStatus() == MARKED_ROLLBACK) {
+                transaction.rollback();
 
         }
     }
@@ -83,7 +90,8 @@ public class UserDaoHibernateImpl implements UserDao {
             transaction.commit();
         } catch (HibernateException e) {
             System.out.println("ошибка в методе saveUser");
-            transaction.rollback();
+            if (transaction.getStatus() == ACTIVE || transaction.getStatus() == MARKED_ROLLBACK) {
+                transaction.rollback();
         }
 
     }
@@ -100,7 +108,8 @@ public class UserDaoHibernateImpl implements UserDao {
             return users;
         } catch (HibernateException e) {
             System.out.println("ошибка в методе getAllUsers");
-            transaction.rollback();
+            if (transaction.getStatus() == ACTIVE || transaction.getStatus() == MARKED_ROLLBACK) {
+                transaction.rollback();
         }
         return users;
     }
@@ -114,7 +123,8 @@ public class UserDaoHibernateImpl implements UserDao {
             transaction.commit();
         } catch (HibernateException e) {
             System.out.println("ошибка в методе saveUser");
-            transaction.rollback();
+            if (transaction.getStatus() == ACTIVE || transaction.getStatus() == MARKED_ROLLBACK) {
+                transaction.rollback();
         }
 
     }
