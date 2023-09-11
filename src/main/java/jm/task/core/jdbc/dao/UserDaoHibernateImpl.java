@@ -18,7 +18,7 @@ import static org.hibernate.resource.transaction.spi.TransactionStatus.MARKED_RO
 public class UserDaoHibernateImpl implements UserDao {
     private SessionFactory sessionFactory = getSessionFactory();
     private Transaction transaction = null;
-    private final int iks = 7;
+
 
     public UserDaoHibernateImpl() {
 
